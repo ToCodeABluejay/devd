@@ -147,9 +147,11 @@ static const char notify = '!';
 static const char nomatch = '?';
 static const char attach = '+';
 static const char detach = '-';
-
+#ifndef __OpenBSD__
 static struct pidfh *pfh;
-
+#else
+static int pfh;
+#endif
 static int no_daemon = 0;
 static int daemonize_quick = 0;
 static int quiet_mode = 0;
@@ -538,8 +540,12 @@ config::open_pidfile()
 
 	if (_pidfile.empty())
 		return;
+#ifndef __OpenBSD__
 	pfh = pidfile_open(_pidfile.c_str(), 0600, &otherpid);
-	if (pfh == NULL) {
+#else
+	pfh = pidfile(_pidfile.c_str());
+#endif
+	if (!pfh) {
 		if (errno == EEXIST)
 			errx(1, "devd already running, pid: %d", (int)otherpid);
 		warn("cannot open pid file");
@@ -556,15 +562,21 @@ config::write_pidfile()
 void
 config::close_pidfile()
 {
-
+#ifndef __OpenBSD__
 	pidfile_close(pfh);
+#else
+	close(pfh);
+#endif
 }
 
 void
 config::remove_pidfile()
 {
-
+#ifndef __OpenBSD__
 	pidfile_remove(pfh);
+#else
+	remove(_pidfile.c_str());
+#endif
 }
 
 void
