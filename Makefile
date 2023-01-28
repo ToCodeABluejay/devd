@@ -32,7 +32,7 @@ DEVDDIR=	/etc/devd
 #.endif
 
 PROG_CXX=devd
-SRCS=	devd.cc token.l parse.y y.tab.h
+SRCS=	devd.cc token.l parse.y y.tab.h sysctl.c
 MAN=	devd.8 devd.conf.5
 
 LIBADD=	util

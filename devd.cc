@@ -86,6 +86,7 @@
 #include <fcntl.h>
 #ifdef __OpenBSD__
 #include <util.h>
+#include "sysctl.h"
 #else
 #include <libutil.h>
 #endif
