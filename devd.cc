@@ -555,8 +555,13 @@ config::open_pidfile()
 void
 config::write_pidfile()
 {
-
+#ifndef __OpenBSD__
 	pidfile_write(pfh);
+#else
+	char temp[64];
+	sprintf(temp, "%d", getpid());
+	write(pfh, temp, strlen(temp));
+#endif
 }
 
 void
