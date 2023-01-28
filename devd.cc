@@ -85,6 +85,7 @@
 #include <err.h>
 #include <fcntl.h>
 #ifdef __OpenBSD__
+#include <sys/ioctl.h>
 #include <util.h>
 #include "sysctl.h"
 #else
