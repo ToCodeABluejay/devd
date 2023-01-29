@@ -582,7 +582,7 @@ config::write_pidfile()
 #else
 	char temp[64];
 	sprintf(temp, "%d", getpid());
-	write(pfh, temp, strlen(temp));
+	write(pfh, temp, 64);
 #endif
 }
 
