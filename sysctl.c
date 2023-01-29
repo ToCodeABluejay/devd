@@ -17,8 +17,7 @@
 #include "sysctl.h"
 
 int
-sysctlbyname(const char *name, void *oldp, size_t *oldlenp,
-    void *newp, size_t newlen)
+sysctlbyname(const char *name, void *oldp, size_t *oldlenp, void *newp, size_t newlen)
 {
 	int i, mib[2];
 
