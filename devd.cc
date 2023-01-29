@@ -168,6 +168,26 @@ static void devdlog(int priority, const char* message, ...);
 static void event_loop(void);
 //static void usage(void) __dead2;
 
+#ifdef __OpenBSD
+int sysctlbyname(const char *name, void *oldp, size_t *oldlenp, void *newp, size_t newlen)
+{
+	int i, mib[2];
+
+	for (i = 0; i < sizeof(sysctlnames) / sizeof(sysctlnames[0]); i++) {
+		if (!strcmp(name, sysctlnames[i].name)) {
+			mib[0] = sysctlnames[i].mib0;
+			mib[1] = sysctlnames[i].mib1;
+
+			return sysctl(mib, 2, oldp, oldlenp, newp, newlen);
+		}
+	}
+
+	errno = ENOENT;
+
+	return (-1);
+}
+#endif
+
 template <class T> void
 delete_and_clear(vector<T *> &v)
 {
