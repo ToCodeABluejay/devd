@@ -168,8 +168,8 @@ static void devdlog(int priority, const char* message, ...);
 static void event_loop(void);
 //static void usage(void) __dead2;
 
-#ifdef __OpenBSD
-int sysctlbyname(const char *name, void *oldp, size_t *oldlenp, void *newp, size_t newlen)
+int
+sysctlbyname(const char *name, void *oldp, size_t *oldlenp, void *newp, size_t newlen)
 {
 	int i, mib[2];
 
@@ -186,7 +186,6 @@ int sysctlbyname(const char *name, void *oldp, size_t *oldlenp, void *newp, size
 
 	return (-1);
 }
-#endif
 
 template <class T> void
 delete_and_clear(vector<T *> &v)
@@ -564,27 +563,23 @@ config::open_pidfile()
 		return;
 #ifndef __OpenBSD__
 	pfh = pidfile_open(_pidfile.c_str(), 0600, &otherpid);
-#else
-	pfh = pidfile(_pidfile.c_str());
-#endif
 	if (!pfh) {
+#else
+	if (!pidfile(_pidfile.c_str())) {
+#endif
 		if (errno == EEXIST)
 			errx(1, "devd already running, pid: %d", (int)otherpid);
 		warn("cannot open pid file");
 	}
 }
 
+#ifndef __OpenBSD__
 void
 config::write_pidfile()
 {
-#ifndef __OpenBSD__
 	pidfile_write(pfh);
-#else
-	char temp[64];
-	sprintf(temp, "%d", getpid());
-	write(pfh, temp, 64);
-#endif
 }
+#endif
 
 void
 config::close_pidfile()
@@ -592,9 +587,10 @@ config::close_pidfile()
 #ifndef __OpenBSD__
 	pidfile_close(pfh);
 #else
-	close(pfh);
+	atexit();
 #endif
 }
+
 
 void
 config::remove_pidfile()
@@ -1106,7 +1102,9 @@ event_loop(void)
 				cfg.remove_pidfile();
 				cfg.open_pidfile();
 				daemon(0, 0);
+#ifndef __OpenBSD__
 				cfg.write_pidfile();
+#endif
 				once++;
 			}
 		}
