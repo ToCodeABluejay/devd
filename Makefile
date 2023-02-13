@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.0 2022/02/12 20:0145≈
+#	$OpenBSD: Makefile,v 1.01 2022/02/12 20:23:30 ToCodeABluejay Exp $
 
 .include <bsd.own.mk>
 
