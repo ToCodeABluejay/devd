@@ -35,7 +35,11 @@
 #include <string.h>
 #include <syslog.h>
 #include "devd.h"
+#ifndef __OpenBSD__
 #include "y.tab.h"
+#else
+#include "parse.h"
+#endif
 
 int lineno = 1;
 
