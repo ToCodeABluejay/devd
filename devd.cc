@@ -583,13 +583,13 @@ config::write_pidfile()
 }
 #endif
 
-/*void
+#ifndef __OpenBSD__
+void
 config::close_pidfile()
 {
-#ifndef __OpenBSD__
 	pidfile_close(pfh);
+}
 #endif
-}*/
 
 
 void
