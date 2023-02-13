@@ -287,7 +287,9 @@ my_system(const char *command)
 		 * Close the PID file, and all other open descriptors.
 		 * Inherit std{in,out,err} only.
 		 */
+		#ifndef __OpenBSD__
 		cfg.close_pidfile();
+		#endif
 		::closefrom(3);
 		::execl(_PATH_BSHELL, "sh", "-c", command, (char *)NULL);
 		::_exit(127);
