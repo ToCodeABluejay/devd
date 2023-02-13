@@ -9,6 +9,6 @@ SRCS= devd.cc parse.y token.l
 DPADD += ${LIBUTIL}
 LDADD += -lutil
 
-MAN= devd.8
+MAN= devd.8 devd.conf.5
 
 .include <bsd.prog.mk>
