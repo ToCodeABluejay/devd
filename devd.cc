@@ -1392,7 +1392,9 @@ main(int argc, char **argv)
 	if (!no_daemon && daemonize_quick) {
 		cfg.open_pidfile();
 		daemon(0, 0);
+		#ifndef __OpenBSD__
 		cfg.write_pidfile();
+		#endif
 	}
 	signal(SIGPIPE, SIG_IGN);
 	signal(SIGHUP, gensighand);
